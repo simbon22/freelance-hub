@@ -43,8 +43,6 @@ export default function ProjectsPage() {
   const [clientId, setClientId] = useState('')
   const [hourlyRate, setHourlyRate] = useState('')
   const [estimatedHours, setEstimatedHours] = useState('')
-  const [tempHours, setTempHours] = useState<Record<string, number>>({})
-  const [tempCosts, setTempCosts] = useState<Record<string, number>>({})
 
   const { data: user } = useQuery({
     queryKey: ['user'],
@@ -219,60 +217,77 @@ export default function ProjectsPage() {
                   </div>
                 )}
 
-                <div className="flex items-center gap-2">
-                  <Label className="text-sm">Ore lavorate:</Label>
-                  <Input
-                    type="number"
-                    step="0.5"
-                    value={tempHours[project.id] ?? project.hours_worked ?? 0}
-                    onChange={(e) => {
-                      const val = parseFloat(e.target.value)
-                      if (!isNaN(val)) setTempHours(prev => ({ ...prev, [project.id]: val }))
-                    }}
-                    className="w-24 h-8 text-sm"
-                  />
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="btn-glow"
-                    onClick={() => {
-                      const newHours = tempHours[project.id]
-                      if (newHours !== undefined && newHours !== project.hours_worked) {
-                        updateProject({ id: project.id, updates: { hours_worked: newHours } })
-                        setTempHours(prev => { const newState = { ...prev }; delete newState[project.id]; return newState })
-                      }
-                    }}
-                  >
-                    Salva
-                  </Button>
+                {/* ORE LAVORATE */}
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Ore lavorate</Label>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="h-8 w-8"
+                      onClick={() => {
+                        const current = project.hours_worked || 0
+                        const newValue = Math.max(0, current - 0.5)
+                        updateProject({ id: project.id, updates: { hours_worked: newValue } })
+                      }}
+                    >
+                      -
+                    </Button>
+                    <span className="w-16 text-center font-mono">
+                      {(project.hours_worked || 0).toFixed(1)} h
+                    </span>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="h-8 w-8"
+                      onClick={() => {
+                        const current = project.hours_worked || 0
+                        const newValue = current + 0.5
+                        updateProject({ id: project.id, updates: { hours_worked: newValue } })
+                      }}
+                    >
+                      +
+                    </Button>
+                  </div>
+                  {project.estimated_hours && project.estimated_hours > 0 && (
+                    <p className="text-xs text-muted-foreground">
+                      Rimanenti: {(project.estimated_hours - (project.hours_worked || 0)).toFixed(1)} ore
+                    </p>
+                  )}
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <Label className="text-sm">Costi esterni (€):</Label>
-                  <Input
-                    type="number"
-                    step="0.01"
-                    value={tempCosts[project.id] ?? project.external_costs ?? 0}
-                    onChange={(e) => {
-                      const val = parseFloat(e.target.value)
-                      if (!isNaN(val)) setTempCosts(prev => ({ ...prev, [project.id]: val }))
-                    }}
-                    className="w-24 h-8 text-sm"
-                  />
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="btn-glow"
-                    onClick={() => {
-                      const newCosts = tempCosts[project.id]
-                      if (newCosts !== undefined && newCosts !== (project.external_costs || 0)) {
-                        updateProject({ id: project.id, updates: { external_costs: newCosts } })
-                        setTempCosts(prev => { const newState = { ...prev }; delete newState[project.id]; return newState })
-                      }
-                    }}
-                  >
-                    Salva
-                  </Button>
+                {/* COSTI ESTERNI */}
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Costi esterni (€)</Label>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="h-8 w-8"
+                      onClick={() => {
+                        const current = project.external_costs || 0
+                        const newValue = Math.max(0, current - 10)
+                        updateProject({ id: project.id, updates: { external_costs: newValue } })
+                      }}
+                    >
+                      -
+                    </Button>
+                    <span className="w-24 text-center font-mono">
+                      €{(project.external_costs || 0).toFixed(2)}
+                    </span>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="h-8 w-8"
+                      onClick={() => {
+                        const current = project.external_costs || 0
+                        const newValue = current + 10
+                        updateProject({ id: project.id, updates: { external_costs: newValue } })
+                      }}
+                    >
+                      +
+                    </Button>
+                  </div>
                 </div>
 
                 <div className="pt-3 mt-2 border-t">

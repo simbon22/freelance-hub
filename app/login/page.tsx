@@ -125,7 +125,7 @@ export default function LoginPage() {
             className="w-full"
             disabled={loading}
           >
-            🎬 Prova la demo
+             Prova la demo
           </Button>
         </CardFooter>
       </Card>

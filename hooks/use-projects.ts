@@ -2,7 +2,6 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabaseClient'
 import { Project, NewProject } from '@/types'
 
-// Fetch tutti i progetti dell'utente
 export const fetchProjects = async (userId: string) => {
   const { data, error } = await supabase
     .from('projects')
@@ -14,19 +13,16 @@ export const fetchProjects = async (userId: string) => {
   return data as (Project & { clients: { name: string } })[]
 }
 
-// Aggiungi progetto
 export const addProject = async (project: NewProject & { user_id: string }) => {
   const { error } = await supabase.from('projects').insert([project])
   if (error) throw new Error(error.message)
 }
 
-// Aggiorna progetto
 export const updateProject = async (id: string, updates: Partial<Project>) => {
   const { error } = await supabase.from('projects').update(updates).eq('id', id)
   if (error) throw new Error(error.message)
 }
 
-// Elimina progetto
 export const deleteProject = async (id: string) => {
   const { error } = await supabase.from('projects').delete().eq('id', id)
   if (error) throw new Error(error.message)

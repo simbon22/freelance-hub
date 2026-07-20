@@ -1,4 +1,3 @@
-// Test per la logica di stima preventivo
 describe('🤖 Stima Preventivo', () => {
   interface EstimateParams {
     projectType: string
@@ -21,23 +20,18 @@ describe('🤖 Stima Preventivo', () => {
     
     let hours = baseHoursMap[params.projectType] || 40
     
-    // Design multiplier
     if (params.design === 'custom') hours *= 1.3
     if (params.design === 'premium') hours *= 1.6
     
-    // Backend multiplier
     if (params.backend === 'simple') hours *= 1.2
     if (params.backend === 'complex') hours *= 1.5
     
-    // Auth multiplier
     if (params.auth === 'basic') hours += 5
     if (params.auth === 'social') hours += 10
     if (params.auth === '2fa') hours += 15
     
-    // Payments multiplier
     if (params.payments !== 'none') hours += 8
     
-    // Pages multiplier
     hours += (params.screens - 1) * 2
     
     return Math.round(hours)

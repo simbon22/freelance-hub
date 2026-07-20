@@ -1,4 +1,3 @@
-// Test puramente logici - nessuna dipendenza da React
 describe('📊 Calcolo Profitto', () => {
   describe('calculateRevenue', () => {
     const calculateRevenue = (hours: number, rate: number) => hours * rate

@@ -1,4 +1,3 @@
-// Test per validazione form
 describe('✅ Validazione Form', () => {
   interface ProjectForm {
     name: string

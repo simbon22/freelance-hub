@@ -2,7 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabaseClient'
 import { Invoice, NewInvoice } from '@/types'
 
-const fetchInvoices = async (userId: string) => {
+export const fetchInvoices = async (userId: string) => {
   const { data, error } = await supabase
     .from('invoices')
     .select('*, projects(name), clients(name)')
@@ -13,17 +13,17 @@ const fetchInvoices = async (userId: string) => {
   return data as (Invoice & { projects: { name: string }, clients: { name: string } })[]
 }
 
-const addInvoice = async (invoice: NewInvoice & { user_id: string }) => {
+export const addInvoice = async (invoice: NewInvoice & { user_id: string }) => {
   const { error } = await supabase.from('invoices').insert([invoice])
   if (error) throw new Error(error.message)
 }
 
-const updateInvoice = async (id: string, updates: Partial<Invoice>) => {
+export const updateInvoice = async (id: string, updates: Partial<Invoice>) => {
   const { error } = await supabase.from('invoices').update(updates).eq('id', id)
   if (error) throw new Error(error.message)
 }
 
-const deleteInvoice = async (id: string) => {
+export const deleteInvoice = async (id: string) => {
   const { error } = await supabase.from('invoices').delete().eq('id', id)
   if (error) throw new Error(error.message)
 }

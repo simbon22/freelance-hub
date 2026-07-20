@@ -19,17 +19,14 @@ type ReportData = {
 export const generateReportPDF = (data: ReportData) => {
   const doc = new jsPDF()
 
-  // Titolo
   doc.setFontSize(20)
   doc.text('Freelance Hub - Report Cliente', 14, 20)
 
-  // Info cliente
   doc.setFontSize(12)
   doc.text(`Cliente: ${data.clientName}`, 14, 35)
   doc.text(`Email: ${data.clientEmail}`, 14, 43)
   doc.text(`Periodo: ${data.periodStart} - ${data.periodEnd}`, 14, 51)
 
-  // Tabella progetti
   autoTable(doc, {
     startY: 65,
     head: [['Progetto', 'Ore', 'Tariffa (€)', 'Totale (€)']],
@@ -52,6 +49,5 @@ export const generateReportPDF = (data: ReportData) => {
     footStyles: { fillColor: [243, 244, 246], textColor: [0, 0, 0], fontStyle: 'bold' }
   })
 
-  // Salva PDF
   doc.save(`report_${data.clientName}_${data.periodStart}_${data.periodEnd}.pdf`)
 }

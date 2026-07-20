@@ -12,6 +12,13 @@ import {
   Tooltip,
   ResponsiveContainer
 } from 'recharts'
+import { 
+  getActiveProjectsCount,
+  getTotalClientsCount,
+  getMonthlyRevenue,
+  getUnbilledHours,
+  getMonthlyChartData
+} from '@/lib/dashboard-calculations'
 
 export default function DashboardPage() {
   const { data: user } = useQuery({
@@ -61,48 +68,12 @@ export default function DashboardPage() {
     enabled: !!user?.id,
   })
 
-  const activeProjects = projects.filter(p => p.status === 'active').length
-  const totalClients = clients.length
-
-  const currentMonth = new Date().getMonth()
-  const currentYear = new Date().getFullYear()
-  const monthlyRevenue = invoices
-    .filter(inv => {
-      const date = new Date(inv.issued_date)
-      return date.getMonth() === currentMonth && date.getFullYear() === currentYear && inv.status === 'paid'
-    })
-    .reduce((sum, inv) => sum + inv.total_amount, 0)
-
-  const unbilledHours = projects
-    .filter(p => p.status === 'active' && (p.hours_worked || 0) > 0)
-    .reduce((sum, p) => sum + (p.hours_worked || 0), 0)
-
-  const getMonthlyChartData = () => {
-    const months = []
-    const now = new Date()
-    for (let i = 5; i >= 0; i--) {
-      const date = new Date(now.getFullYear(), now.getMonth() - i, 1)
-      const monthName = date.toLocaleString('it-IT', { month: 'short' })
-      const year = date.getFullYear()
-      
-      const revenue = invoices
-        .filter(inv => {
-          const invDate = new Date(inv.issued_date)
-          return invDate.getMonth() === date.getMonth() && 
-                 invDate.getFullYear() === year && 
-                 inv.status === 'paid'
-        })
-        .reduce((sum, inv) => sum + inv.total_amount, 0)
-      
-      months.push({
-        mese: `${monthName} ${year}`,
-        entrate: revenue
-      })
-    }
-    return months
-  }
-
-  const chartData = getMonthlyChartData()
+  // Calcoli usando le funzioni testate
+  const activeProjects = getActiveProjectsCount(projects)
+  const totalClients = getTotalClientsCount(clients)
+  const monthlyRevenue = getMonthlyRevenue(invoices)
+  const unbilledHours = getUnbilledHours(projects)
+  const chartData = getMonthlyChartData(invoices)
 
   if (!user) return null
 

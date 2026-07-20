@@ -3,7 +3,7 @@ import { supabase } from '@/lib/supabaseClient'
 import { Project, NewProject } from '@/types'
 
 // Fetch tutti i progetti dell'utente
-const fetchProjects = async (userId: string) => {
+export const fetchProjects = async (userId: string) => {
   const { data, error } = await supabase
     .from('projects')
     .select('*, clients(name)')
@@ -15,19 +15,19 @@ const fetchProjects = async (userId: string) => {
 }
 
 // Aggiungi progetto
-const addProject = async (project: NewProject & { user_id: string }) => {
+export const addProject = async (project: NewProject & { user_id: string }) => {
   const { error } = await supabase.from('projects').insert([project])
   if (error) throw new Error(error.message)
 }
 
 // Aggiorna progetto
-const updateProject = async (id: string, updates: Partial<Project>) => {
+export const updateProject = async (id: string, updates: Partial<Project>) => {
   const { error } = await supabase.from('projects').update(updates).eq('id', id)
   if (error) throw new Error(error.message)
 }
 
 // Elimina progetto
-const deleteProject = async (id: string) => {
+export const deleteProject = async (id: string) => {
   const { error } = await supabase.from('projects').delete().eq('id', id)
   if (error) throw new Error(error.message)
 }

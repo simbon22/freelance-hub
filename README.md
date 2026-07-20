@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Freelance Hub
+
+A comprehensive management platform for freelancers to track projects, clients, invoices, and generate professional reports.
+
+## Tech Stack
+
+- Framework: Next.js 14 (App Router)
+- Language: TypeScript
+- Styling: Tailwind CSS + shadcn/ui
+- Database: Supabase (PostgreSQL)
+- Auth: Supabase Auth
+- State Management: Zustand
+- Data Fetching: TanStack Query
+- Testing: Jest + React Testing Library
+- PDF Generation: jsPDF + jspdf-autotable
 
 ## Getting Started
 
-First, run the development server:
+Prerequisites: Node.js 18+, npm/yarn/pnpm, Supabase account.
 
-```bash
+Installation:
+git clone <>
+cd freelance-hub
+npm install
+cp .env.example .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 to view the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Environment Variables:
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Testing
 
-## Learn More
+Run all tests: npm test
+Run specific test: npm test -- dashboard-calculations.test.ts
+Run with coverage: npm test -- --coverage
 
-To learn more about Next.js, take a look at the following resources:
+Test Coverage:
+- Dashboard calculations: 5 tests
+- Zustand store: 3 tests
+- Projects CRUD hooks: 4 tests
+- Total: 19+ tests passing
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+freelance-hub/
+├── app/                    # Next.js App Router pages
+│   ├── dashboard/          # Protected routes
+│   └── login/              # Authentication
+├── components/             # Reusable UI components
+│   └── ui/                 # shadcn/ui primitives
+├── hooks/                  # Custom React hooks
+│   ├── use-projects.ts     # Project CRUD operations
+│   └── use-invoices.ts     # Invoice management
+├── lib/                    # Business logic & utilities
+│   ├── supabaseClient.ts   # Database client
+│   ├── dashboard-calculations.ts
+│   └── generateReportPDF.ts
+├── store/                  # Zustand state stores
+│   └── dashboard-store.ts
+├── types/                  # TypeScript definitions
+└── __tests__/              # Test suite
 
-## Deploy on Vercel
+## Features
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Dashboard with real-time metrics
+- Client management
+- Project management with status tracking
+- Invoice generation
+- PDF reports
+- Authentication with Supabase
+- Responsive design
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deployment
+
+npm run build
+npm run start
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch: git checkout -b feat/feature-name
+3. Commit changes: git commit -m "feat: add feature"
+4. Push: git push origin feat/feature-name
+5. Open a Pull Request
+
+
+## Contact
+
+Simone Boncore - boncoresimone7@gmail.com
+
+Built with ❤️ for freelancers

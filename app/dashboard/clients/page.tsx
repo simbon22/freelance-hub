@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Mail, Phone, FileText, Plus } from 'lucide-react'
 import {
   Dialog,
   DialogContent,
@@ -125,12 +126,12 @@ export default function ClientsPage() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Clienti</h1>
-          <p className="text-muted-foreground">Gestisci i tuoi clienti</p>
+          <h1 className="text-2xl font-bold tracking-tight">Clienti</h1>
+          <p className="text-muted-foreground text-sm">Gestisci i tuoi clienti</p>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button className="btn-glow">+ Nuovo cliente</Button>
+            <Button className="gap-1.5"><Plus size={15} /> Nuovo cliente</Button>
           </DialogTrigger>
           <DialogContent>
             <form onSubmit={handleSubmit}>
@@ -175,7 +176,7 @@ export default function ClientsPage() {
                 <Button type="button" variant="outline" onClick={() => setOpen(false)}>
                   Annulla
                 </Button>
-                <Button type="submit" disabled={addClientMutation.isPending} className="btn-glow">
+                <Button type="submit" disabled={addClientMutation.isPending}>
                   {addClientMutation.isPending ? 'Salvataggio...' : 'Salva cliente'}
                 </Button>
               </DialogFooter>
@@ -186,16 +187,15 @@ export default function ClientsPage() {
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {clients.map((client, index) => (
-          <Card 
-            key={client.id} 
-            className="card-glow card-animate overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-            style={{ animationDelay: `${index * 0.05}s` }}
+          <Card
+            key={client.id}
+            className="card-animate card-hover overflow-hidden"
+            style={{ animationDelay: `${index * 0.04}s` }}
           >
-            <div className="h-2 bg-gradient-to-r from-primary to-secondary"></div>
             <CardHeader>
               <div className="flex items-center justify-between">
-                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-                  <span className="text-lg font-semibold text-primary">
+                <div className="h-10 w-10 rounded-lg bg-accent flex items-center justify-center">
+                  <span className="text-base font-semibold text-accent-foreground">
                     {client.name.charAt(0).toUpperCase()}
                   </span>
                 </div>
@@ -205,27 +205,24 @@ export default function ClientsPage() {
             <CardContent className="space-y-2">
               {client.email && (
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
+                  <Mail size={14} />
                   {client.email}
                 </div>
               )}
               {client.phone && (
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                  </svg>
+                  <Phone size={14} />
                   {client.phone}
                 </div>
               )}
               <Button
                 variant="outline"
                 size="sm"
-                className="mt-3 w-full btn-glow"
+                className="mt-3 w-full gap-1.5"
                 onClick={() => generateClientReport(client.id, client.name, client.email, user!.id)}
               >
-                📄 Genera Report
+                <FileText size={14} />
+                Genera Report
               </Button>
             </CardContent>
           </Card>

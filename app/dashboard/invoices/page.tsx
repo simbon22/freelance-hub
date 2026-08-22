@@ -26,6 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Plus, CheckCircle2, Clock3, AlertTriangle } from 'lucide-react'
 
 export default function InvoicesPage() {
   const [open, setOpen] = useState(false)
@@ -81,11 +82,23 @@ export default function InvoicesPage() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'paid':
-        return <span className="px-2 py-1 rounded text-xs bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300">✅ Pagata</span>
+        return (
+          <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs bg-primary/10 text-primary">
+            <CheckCircle2 size={12} /> Pagata
+          </span>
+        )
       case 'pending':
-        return <span className="px-2 py-1 rounded text-xs bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300">⏳ In attesa</span>
+        return (
+          <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs bg-amber-500/10 text-amber-600 dark:text-amber-400">
+            <Clock3 size={12} /> In attesa
+          </span>
+        )
       case 'overdue':
-        return <span className="px-2 py-1 rounded text-xs bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300">⚠️ Scaduta</span>
+        return (
+          <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs bg-destructive/10 text-destructive">
+            <AlertTriangle size={12} /> Scaduta
+          </span>
+        )
       default:
         return null
     }
@@ -97,12 +110,12 @@ export default function InvoicesPage() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Fatture</h1>
-          <p className="text-muted-foreground">Gestisci le tue fatture</p>
+          <h1 className="text-2xl font-bold tracking-tight">Fatture</h1>
+          <p className="text-muted-foreground text-sm">Gestisci le tue fatture</p>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button className="btn-glow">+ Nuova fattura</Button>
+            <Button className="gap-1.5"><Plus size={15} /> Nuova fattura</Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
@@ -140,7 +153,7 @@ export default function InvoicesPage() {
             </div>
             <DialogFooter>
               <Button variant="outline" onClick={() => setOpen(false)}>Annulla</Button>
-              <Button onClick={handleCreateInvoice} disabled={isAdding || !selectedProjectId} className="btn-glow">
+              <Button onClick={handleCreateInvoice} disabled={isAdding || !selectedProjectId}>
                 {isAdding ? 'Creazione...' : 'Crea fattura'}
               </Button>
             </DialogFooter>
@@ -150,12 +163,11 @@ export default function InvoicesPage() {
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {invoices.map((invoice, index) => (
-          <Card 
-            key={invoice.id} 
-            className="card-glow card-animate overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-            style={{ animationDelay: `${index * 0.05}s` }}
+          <Card
+            key={invoice.id}
+            className="card-animate card-hover overflow-hidden"
+            style={{ animationDelay: `${index * 0.04}s` }}
           >
-            <div className="h-2 bg-gradient-to-r from-primary to-secondary"></div>
             <CardHeader>
               <div className="flex justify-between items-start">
                 <div>
@@ -174,14 +186,14 @@ export default function InvoicesPage() {
               </div>
               <div className="text-sm">
                 <span className="text-muted-foreground">Importo:</span>{' '}
-                <span className="font-semibold">€{invoice.total_amount.toFixed(2)}</span>
+                <span className="font-mono font-semibold font-tabular">€{invoice.total_amount.toFixed(2)}</span>
               </div>
               <div className="text-sm">
                 <span className="text-muted-foreground">Scadenza:</span>{' '}
                 {invoice.due_date}
               </div>
               {invoice.paid_date && (
-                <div className="text-sm text-green-600">
+                <div className="text-sm text-primary">
                   Pagata il: {invoice.paid_date}
                 </div>
               )}
@@ -200,9 +212,9 @@ export default function InvoicesPage() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="pending">⏳ In attesa</SelectItem>
-                  <SelectItem value="paid">✅ Pagata</SelectItem>
-                  <SelectItem value="overdue">⚠️ Scaduta</SelectItem>
+                  <SelectItem value="pending">In attesa</SelectItem>
+                  <SelectItem value="paid">Pagata</SelectItem>
+                  <SelectItem value="overdue">Scaduta</SelectItem>
                 </SelectContent>
               </Select>
             </CardContent>

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { LoginBackground } from '@/components/LoginBackground'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -52,11 +53,12 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-900 dark:to-slate-800 p-4">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen relative flex items-center justify-center bg-muted/40 p-4">
+      <LoginBackground />
+      <Card className="w-full max-w-md relative z-10">
         <CardHeader className="text-center">
-          <div className="mx-auto w-12 h-12 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center mb-4">
-            <span className="text-white text-xl font-bold">FH</span>
+          <div className="mx-auto w-12 h-12 rounded-lg bg-primary flex items-center justify-center mb-4">
+            <span className="text-primary-foreground text-xl font-bold">FH</span>
           </div>
           <CardTitle className="text-2xl">Freelance Hub</CardTitle>
           <CardDescription>

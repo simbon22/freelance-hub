@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { supabase } from '@/lib/supabaseClient'
 import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
+import { Menu, LogOut } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -38,37 +39,33 @@ export default function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b bg-background/95 backdrop-blur-sm px-4 md:px-6">
+    <header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-4 border-b bg-background/95 backdrop-blur-sm px-4 md:px-6">
       <div className="flex items-center gap-4">
-        {/* Pulsante hamburger per mobile */}
         <Button
           variant="ghost"
           size="icon"
           onClick={toggleSidebar}
           className="lg:hidden"
         >
-          <span className="text-xl">☰</span>
+          <Menu size={18} />
         </Button>
         <div className="hidden md:block">
-          <h1 className="text-sm font-medium text-muted-foreground">
-            {new Date().toLocaleDateString('it-IT', { 
-              weekday: 'long', 
-              day: 'numeric', 
-              month: 'long' 
+          <p className="text-sm font-medium text-muted-foreground">
+            {new Date().toLocaleDateString('it-IT', {
+              weekday: 'long',
+              day: 'numeric',
+              month: 'long'
             })}
-          </h1>
-          <p className="text-xs text-muted-foreground/70">
-            {new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })}
           </p>
         </div>
       </div>
-      
+
       <div className="flex items-center gap-3">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="rounded-full">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-                <span className="text-white text-sm font-medium">
+              <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+                <span className="text-primary-foreground text-sm font-medium">
                   {userName ? userName.charAt(0).toUpperCase() : 'U'}
                 </span>
               </div>
@@ -83,7 +80,8 @@ export default function Navbar() {
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout} className="text-red-600">
-              🚪 Logout
+              <LogOut size={14} className="mr-2" />
+              Logout
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

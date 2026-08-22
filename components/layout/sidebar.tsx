@@ -1,56 +1,71 @@
 'use client'
 
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useDashboardStore } from '@/store/dashboard-store'
 import { ThemeToggle } from '@/components/theme-toggle'
+import {
+  LayoutDashboard,
+  Users,
+  FolderKanban,
+  Receipt,
+  Sparkles,
+  X,
+} from 'lucide-react'
+
+const navItems = [
+  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/dashboard/clients', label: 'Clienti', icon: Users },
+  { href: '/dashboard/projects', label: 'Progetti', icon: FolderKanban },
+  { href: '/dashboard/invoices', label: 'Fatture', icon: Receipt },
+  { href: '/dashboard/estimate', label: 'Stima AI', icon: Sparkles },
+]
 
 export default function Sidebar() {
-  const { sidebarOpen, toggleSidebar } = useDashboardStore()
+  const { toggleSidebar } = useDashboardStore()
+  const pathname = usePathname()
 
   return (
-    <aside className="w-64 bg-card/80 backdrop-blur-sm border-r h-screen flex flex-col">
-      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
-      
-      <div className="relative z-10 flex flex-col h-full">
-        <div className="flex items-center justify-between p-4 border-b">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-              <span className="text-white font-bold text-sm">FH</span>
-            </div>
-            <h2 className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Freelance Hub
-            </h2>
+    <aside className="w-60 bg-sidebar text-sidebar-foreground min-h-screen flex flex-col border-r border-sidebar-border">
+      <div className="flex items-center justify-between px-5 py-5">
+        <div className="flex items-center gap-2.5">
+          <div className="w-7 h-7 rounded-md bg-sidebar-primary flex items-center justify-center">
+            <span className="text-sidebar-primary-foreground font-bold text-[11px]">FH</span>
           </div>
-          {/* Pulsante chiudi su mobile */}
-          <button 
-            onClick={toggleSidebar}
-            className="lg:hidden text-muted-foreground hover:text-foreground"
-          >
-            ✕
-          </button>
+          <span className="font-semibold text-sm">Freelance Hub</span>
         </div>
-        
-        <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
-          <Link href="/dashboard" onClick={() => toggleSidebar()} className="flex items-center gap-3 hover:bg-accent p-2 rounded-lg transition-all">
-            <span>📊</span> Dashboard
-          </Link>
-          <Link href="/dashboard/clients" onClick={() => toggleSidebar()} className="flex items-center gap-3 hover:bg-accent p-2 rounded-lg transition-all">
-            <span>👥</span> Clienti
-          </Link>
-          <Link href="/dashboard/projects" onClick={() => toggleSidebar()} className="flex items-center gap-3 hover:bg-accent p-2 rounded-lg transition-all">
-            <span>📁</span> Progetti
-          </Link>
-          <Link href="/dashboard/invoices" onClick={() => toggleSidebar()} className="flex items-center gap-3 hover:bg-accent p-2 rounded-lg transition-all">
-            <span>💰</span> Fatture
-          </Link>
-          <Link href="/dashboard/estimate" onClick={() => toggleSidebar()} className="flex items-center gap-3 hover:bg-accent p-2 rounded-lg transition-all">
-            <span>🤖</span> Stima AI
-          </Link>
-        </nav>
-        
-        <div className="p-4 border-t">
-          <ThemeToggle />
-        </div>
+        <button
+          onClick={toggleSidebar}
+          className="lg:hidden text-sidebar-foreground/60 hover:text-sidebar-foreground"
+        >
+          <X size={18} />
+        </button>
+      </div>
+
+      <nav className="flex-1 px-3 space-y-0.5">
+        {navItems.map((item) => {
+          const isActive = pathname === item.href
+          const Icon = item.icon
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={() => toggleSidebar()}
+              className={`flex items-center gap-3 px-3 py-2 rounded-md text-[13.5px] transition-colors ${
+                isActive
+                  ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium'
+                  : 'text-sidebar-foreground/65 hover:text-sidebar-foreground hover:bg-sidebar-accent/60'
+              }`}
+            >
+              <Icon size={16} className="shrink-0 opacity-90" />
+              {item.label}
+            </Link>
+          )
+        })}
+      </nav>
+
+      <div className="px-4 py-4 border-t border-sidebar-border">
+        <ThemeToggle />
       </div>
     </aside>
   )

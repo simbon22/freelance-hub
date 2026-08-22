@@ -26,6 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Plus, TrendingUp } from 'lucide-react'
 
 const fetchClients = async (userId: string) => {
   const { data, error } = await supabase
@@ -88,12 +89,12 @@ export default function ProjectsPage() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Progetti</h1>
-          <p className="text-muted-foreground">Gestisci i tuoi progetti</p>
+          <h1 className="text-2xl font-bold tracking-tight">Progetti</h1>
+          <p className="text-muted-foreground text-sm">Gestisci i tuoi progetti</p>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button className="btn-glow">+ Nuovo progetto</Button>
+            <Button className="gap-1.5"><Plus size={15} /> Nuovo progetto</Button>
           </DialogTrigger>
           <DialogContent>
             <form onSubmit={handleSubmit}>
@@ -157,7 +158,7 @@ export default function ProjectsPage() {
                 <Button type="button" variant="outline" onClick={() => setOpen(false)}>
                   Annulla
                 </Button>
-                <Button type="submit" disabled={isAdding} className="btn-glow">
+                <Button type="submit" disabled={isAdding}>
                   {isAdding ? 'Creazione...' : 'Crea progetto'}
                 </Button>
               </DialogFooter>
@@ -174,16 +175,15 @@ export default function ProjectsPage() {
           const profitMargin = revenue > 0 ? (profit / revenue) * 100 : 0
 
           return (
-            <Card 
-              key={project.id} 
-              className="card-glow card-animate overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-              style={{ animationDelay: `${index * 0.05}s` }}
+            <Card
+              key={project.id}
+              className="card-animate card-hover overflow-hidden"
+              style={{ animationDelay: `${index * 0.04}s` }}
             >
-              <div className="h-2 bg-gradient-to-r from-primary to-secondary"></div>
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <div className="h-10 w-10 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-                    <span className="text-lg font-semibold text-primary">
+                  <div className="h-10 w-10 rounded-lg bg-accent flex items-center justify-center">
+                    <span className="text-base font-semibold text-accent-foreground">
                       {project.name.charAt(0).toUpperCase()}
                     </span>
                   </div>
@@ -195,9 +195,9 @@ export default function ProjectsPage() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="active">🟢 Attivo</SelectItem>
-                      <SelectItem value="paused">⏸️ Pausa</SelectItem>
-                      <SelectItem value="completed">✅ Completato</SelectItem>
+                      <SelectItem value="active">Attivo</SelectItem>
+                      <SelectItem value="paused">Pausa</SelectItem>
+                      <SelectItem value="completed">Completato</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -291,12 +291,14 @@ export default function ProjectsPage() {
                 </div>
 
                 <div className="pt-3 mt-2 border-t">
-                  <p className="text-sm font-semibold mb-2">📊 Profitto</p>
+                  <p className="text-sm font-semibold mb-2 flex items-center gap-1.5">
+                    <TrendingUp size={14} className="text-primary" /> Profitto
+                  </p>
                   <div className="grid grid-cols-2 gap-1 text-sm">
                     <span className="text-muted-foreground">Ricavo:</span>
-                    <span>€{revenue.toFixed(2)}</span>
+                    <span className="font-mono font-tabular">€{revenue.toFixed(2)}</span>
                     <span className="text-muted-foreground">Margine netto:</span>
-                    <span className={profit >= 0 ? 'text-green-600' : 'text-red-600'}>
+                    <span className={`font-mono font-tabular ${profit >= 0 ? 'text-primary' : 'text-destructive'}`}>
                       €{profit.toFixed(2)} ({profitMargin.toFixed(1)}%)
                     </span>
                   </div>

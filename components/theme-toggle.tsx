@@ -3,6 +3,7 @@
 import { useTheme } from "next-themes"
 import { Button } from "@/components/ui/button"
 import { useEffect, useState } from "react"
+import { Sun, Moon } from "lucide-react"
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme()
@@ -15,22 +16,25 @@ export function ThemeToggle() {
 
   const handleToggle = () => {
     const newTheme = theme === "light" ? "dark" : "light"
-    
-    // Aggiunge una classe temporanea per l'animazione
+
     document.documentElement.classList.add('theme-transitioning')
-    
+
     setTimeout(() => {
       setTheme(newTheme)
     }, 0)
-    
-    // Rimuove la classe dopo la transizione
+
     setTimeout(() => {
       document.documentElement.classList.remove('theme-transitioning')
     }, 300)
   }
 
   if (!mounted) {
-    return <Button variant="outline" size="sm">🌙</Button>
+    return (
+      <Button variant="outline" size="sm" className="w-full justify-start gap-2 bg-sidebar-accent text-sidebar-foreground border-sidebar-border hover:bg-sidebar-accent/70 hover:text-sidebar-foreground">
+        <Moon size={14} />
+        Tema
+      </Button>
+    )
   }
 
   return (
@@ -38,8 +42,10 @@ export function ThemeToggle() {
       variant="outline"
       size="sm"
       onClick={handleToggle}
+      className="w-full justify-start gap-2 bg-sidebar-accent text-sidebar-foreground border-sidebar-border hover:bg-sidebar-accent/70 hover:text-sidebar-foreground"
     >
-      {theme === "light" ? "🌙" : "☀️"}
+      {theme === "light" ? <Moon size={14} /> : <Sun size={14} />}
+      {theme === "light" ? "Tema scuro" : "Tema chiaro"}
     </Button>
   )
 }

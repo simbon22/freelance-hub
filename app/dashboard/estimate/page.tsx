@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Sparkles, AlertTriangle, Lightbulb, Save } from 'lucide-react'
 
 export default function EstimatePage() {
   const [formData, setFormData] = useState({
@@ -68,15 +69,14 @@ export default function EstimatePage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight"> Stima Preventivo con l&apos;intelligenza artificiale</h1>
-        <p className="text-muted-foreground">Genera preventivi intelligenti basati sui tuoi parametri</p>
+        <h1 className="text-2xl font-bold tracking-tight">Stima Preventivo con l&apos;intelligenza artificiale</h1>
+        <p className="text-muted-foreground text-sm">Genera preventivi intelligenti basati sui tuoi parametri</p>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <Card className="card-glow card-animate overflow-hidden">
-          <div className="h-2 bg-gradient-to-r from-primary to-secondary"></div>
+        <Card className="card-animate overflow-hidden">
           <CardHeader>
-            <CardTitle>Parametri progetto</CardTitle>
+            <CardTitle className="text-base">Parametri progetto</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -209,7 +209,8 @@ export default function EstimatePage() {
                 </Select>
               </div>
 
-              <Button type="submit" className="w-full btn-glow" disabled={loading || !formData.projectType}>
+              <Button type="submit" className="w-full gap-1.5" disabled={loading || !formData.projectType}>
+                <Sparkles size={15} />
                 {loading ? 'Generazione in corso...' : 'Genera preventivo con AI'}
               </Button>
             </form>
@@ -217,23 +218,24 @@ export default function EstimatePage() {
         </Card>
 
         {result && (
-          <Card className="card-glow card-animate border-2 border-primary/20 overflow-hidden">
-            <div className="h-2 bg-gradient-to-r from-primary to-secondary"></div>
+          <Card className="card-animate border-primary/30 overflow-hidden">
             <CardHeader>
-              <CardTitle>📊 Preventivo generato</CardTitle>
+              <CardTitle className="text-base flex items-center gap-2">
+                <Sparkles size={16} className="text-primary" /> Preventivo generato
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-primary/10 p-3 rounded-lg">
+                <div className="bg-accent p-3 rounded-lg">
                   <p className="text-sm text-muted-foreground">Ore stimate</p>
-                  <p className="text-xl font-bold text-primary">
+                  <p className="font-mono text-xl font-bold font-tabular text-accent-foreground">
                     {result.estimatedHours.min} - {result.estimatedHours.max}
                   </p>
                   <p className="text-xs">Consigliate: {result.estimatedHours.recommended}</p>
                 </div>
-                <div className="bg-secondary/10 p-3 rounded-lg">
+                <div className="bg-muted p-3 rounded-lg">
                   <p className="text-sm text-muted-foreground">Prezzo consigliato</p>
-                  <p className="text-xl font-bold text-secondary-foreground">
+                  <p className="font-mono text-xl font-bold font-tabular">
                     €{result.recommendedPrice.min.toLocaleString()} - €{result.recommendedPrice.max.toLocaleString()}
                   </p>
                   <p className="text-xs">Consigliato: €{result.recommendedPrice.recommended.toLocaleString()}</p>
@@ -256,23 +258,28 @@ export default function EstimatePage() {
               </div>
 
               {result.risks.length > 0 && (
-                <div className="bg-yellow-50 dark:bg-yellow-950 p-3 rounded-lg">
-                  <p className="text-sm font-medium text-yellow-800 dark:text-yellow-300">⚠️ Rischi da considerare</p>
-                  <ul className="text-sm text-yellow-700 dark:text-yellow-400 mt-1 list-disc list-inside">
+                <div className="bg-amber-500/10 p-3 rounded-lg">
+                  <p className="text-sm font-medium text-amber-700 dark:text-amber-400 flex items-center gap-1.5">
+                    <AlertTriangle size={14} /> Rischi da considerare
+                  </p>
+                  <ul className="text-sm text-amber-700/90 dark:text-amber-400/90 mt-1 list-disc list-inside">
                     {result.risks.map((risk, i) => <li key={i}>{risk}</li>)}
                   </ul>
                 </div>
               )}
 
-              <div className="bg-blue-50 dark:bg-blue-950 p-3 rounded-lg">
-                <p className="text-sm font-medium text-blue-800 dark:text-blue-300">💡 Raccomandazioni</p>
-                <ul className="text-sm text-blue-700 dark:text-blue-400 mt-1 list-disc list-inside">
+              <div className="bg-accent p-3 rounded-lg">
+                <p className="text-sm font-medium text-accent-foreground flex items-center gap-1.5">
+                  <Lightbulb size={14} /> Raccomandazioni
+                </p>
+                <ul className="text-sm text-accent-foreground/90 mt-1 list-disc list-inside">
                   {result.recommendations.map((rec, i) => <li key={i}>{rec}</li>)}
                 </ul>
               </div>
 
-              <Button variant="outline" className="w-full btn-glow" onClick={() => alert('Salvataggio preventivo (prossimamente)')}>
-                💾 Salva questo preventivo
+              <Button variant="outline" className="w-full gap-1.5" onClick={() => alert('Salvataggio preventivo (prossimamente)')}>
+                <Save size={14} />
+                Salva questo preventivo
               </Button>
             </CardContent>
           </Card>

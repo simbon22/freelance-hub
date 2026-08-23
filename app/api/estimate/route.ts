@@ -38,7 +38,7 @@ Usa numeri realistici in base ai parametri. Per la timeline, scegli tra: "1 sett
 
     const completion = await groq.chat.completions.create({
       messages: [{ role: 'user', content: prompt }],
-      model: 'llama-3.1-8b-instant',
+      model: 'openai/gpt-oss-120b',
       temperature: 0.5,
     })
 
